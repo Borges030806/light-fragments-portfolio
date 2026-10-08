@@ -7,7 +7,7 @@
   <meta name="description" content="照片集，JackMode 的摄影作品：海岸、城市、古迹与山野，共三十三张。">
   <title>照片集 · JackMode</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f5f5f2'/%3E%3Crect x='13' y='13' width='38' height='38' fill='none' stroke='%23181818' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='9' fill='none' stroke='%23181818' stroke-width='2'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="gallery-20261008.css">
+  <link rel="stylesheet" href="gallery-hero-20261008.css">
 </head>
 <body>
   <header class="topbar wrap">
@@ -74,6 +74,8 @@
     const buttons = [...document.querySelectorAll('.work-button')];
     const collectionButtons = [...document.querySelectorAll('.collection-option')];
     const gallery = document.getElementById('gallery');
+    const works = [...gallery.querySelectorAll('.work')];
+    const leadWork = gallery.querySelector('.work[data-favorite-rank="8"]');
     const worksTitle = document.getElementById('works-title');
     const worksSummary = document.getElementById('works-summary');
     const enlarged = document.getElementById('lightbox-image');
@@ -83,11 +85,13 @@
     let selected = 0;
     function setView(view) {
       const favoritesOnly = view === 'favorites';
-      buttons.forEach(button => {
-        const work = button.closest('.work');
+      works.forEach(work => gallery.appendChild(work));
+      if (favoritesOnly) gallery.prepend(leadWork);
+      leadWork.querySelector('img').loading = favoritesOnly ? 'eager' : 'lazy';
+      works.forEach(work => {
         work.hidden = favoritesOnly && !work.dataset.favoriteRank;
       });
-      visibleButtons = buttons.filter(button => !button.closest('.work').hidden);
+      visibleButtons = [...gallery.querySelectorAll('.work-button')].filter(button => !button.closest('.work').hidden);
       const total = String(visibleButtons.length).padStart(2, '0');
       visibleButtons.forEach((button, index) => {
         button.closest('.work').querySelector('figcaption span:last-child').textContent = `${String(index + 1).padStart(2, '0')} / ${total}`;
