@@ -20,9 +20,9 @@
       <p class="intro">摄影 / JackMode<br>海岸、城市、古迹与山野，一组关于光与停留的作品。</p>
     </section>
     <section id="works" class="wrap" aria-labelledby="works-title">
-      <div class="section-head"><h2 id="works-title">我喜欢的</h2><p id="works-summary" aria-live="polite">09 / 33</p></div>
+      <div class="section-head"><h2 id="works-title">我喜欢的</h2><p id="works-summary" aria-live="polite">09 / 09</p></div>
       <div class="collection-switch" role="group" aria-label="作品分类">
-        <button class="collection-option is-active" type="button" data-view="favorites" aria-pressed="true"><span>我喜欢的</span><span>09 / 33</span></button>
+        <button class="collection-option is-active" type="button" data-view="favorites" aria-pressed="true"><span>我喜欢的</span><span>09 / 09</span></button>
         <button class="collection-option" type="button" data-view="all" aria-pressed="false"><span>全部作品</span><span>33 / 33</span></button>
       </div>
       <div class="gallery" id="gallery">
@@ -88,9 +88,13 @@
         work.hidden = favoritesOnly && !work.dataset.favoriteRank;
       });
       visibleButtons = buttons.filter(button => !button.closest('.work').hidden);
+      const total = String(visibleButtons.length).padStart(2, '0');
+      visibleButtons.forEach((button, index) => {
+        button.closest('.work').querySelector('figcaption span:last-child').textContent = `${String(index + 1).padStart(2, '0')} / ${total}`;
+      });
       gallery.dataset.view = view;
       worksTitle.textContent = favoritesOnly ? '我喜欢的' : '全部作品';
-      worksSummary.textContent = favoritesOnly ? '09 / 33' : '33 / 33';
+      worksSummary.textContent = `${total} / ${total}`;
       collectionButtons.forEach(button => {
         const active = button.dataset.view === view;
         button.classList.toggle('is-active', active);
